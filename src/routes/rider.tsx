@@ -27,7 +27,7 @@ function Rider() {
     queryKey: ["orders", "rider", user?.id],
     enabled: isRider,
     queryFn: async () =>
-      (await supabase.from("orders").select(ORDER_SELECT).eq("order_type", "delivery").neq("user_id", "00000000-0000-0000-0000-000000000000").order("created_at", { ascending: false }).limit(100)).data ?? [],
+      (await supabase.from("orders").select(ORDER_SELECT).eq("order_type", "delivery").order("created_at", { ascending: false }).limit(100)).data ?? [],
   });
   if (loading) return null;
   if (!user) return <NeedSignIn />;
