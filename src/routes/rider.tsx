@@ -34,7 +34,7 @@ function Rider() {
   if (!isRider) return <p className="py-16 text-center text-muted-foreground">This page is for riders only.</p>;
   const act = async (id: string, action: string) => {
     const { error } = await supabase.rpc("rider_action", { _order: id, _action: action });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Updated");
     qc.invalidateQueries({ queryKey: ["orders"] });
   };
