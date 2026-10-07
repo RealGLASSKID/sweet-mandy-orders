@@ -146,6 +146,6 @@ export function NeedSignIn({ text = "Please sign in to continue." }: { text?: st
   );
 }
 
-export function StatusPill({ className, children }: { className: string; children: React.ReactNode }) {
+export function StatusPill({ className, children }: { className?: string; children: React.ReactNode }) {
   return <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${className}`}>{children}</span>;
 }

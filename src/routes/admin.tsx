@@ -64,7 +64,7 @@ function OrdersTab() {
   const list = data.filter((o) => (filter === "active" ? !["delivered", "cancelled"].includes(o.status) : filter === "all" || o.status === filter));
   const update = async (id: string, patch: { status?: string; payment_status?: string }) => {
     const { error } = await supabase.from("orders").update(patch).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries({ queryKey: ["orders"] });
   };
   return (
@@ -127,7 +127,7 @@ function MenuTab() {
   const upload = async (file: File) => {
     const path = `${crypto.randomUUID()}-${file.name.replace(/[^a-z0-9.]/gi, "")}`;
     const { error } = await supabase.storage.from("product-images").upload(path, file);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     setF((x) => ({ ...x, image_url: supabase.storage.from("product-images").getPublicUrl(path).data.publicUrl }));
   };
   const save = async (e: React.FormEvent) => {
@@ -136,7 +136,7 @@ function MenuTab() {
     const row = { name: f.name, description: f.description, price: Number(f.price), category_id: f.category_id || null, image_url: f.image_url || null };
     const { error } = f.id ? await supabase.from("products").update(row).eq("id", f.id) : await supabase.from("products").insert(row);
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Saved");
     setF(empty);
     refresh();
@@ -208,7 +208,7 @@ function AreasTab() {
         onSubmit={async (e) => {
           e.preventDefault();
           const { error } = await supabase.from("delivery_areas").insert({ name, fee: Number(fee) });
-          if (error) return toast.error(error.message);
+          if (error) { toast.error(error.message); return; }
           setName("");
           setFee("");
           refresh();
@@ -252,7 +252,7 @@ function StoreTab() {
   if (!s) return null;
   const save = async (patch: Partial<typeof s>) => {
     const { error } = await supabase.from("store_settings").update(patch).eq("id", 1);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Saved");
     qc.invalidateQueries({ queryKey: ["settings"] });
   };
@@ -284,7 +284,7 @@ function StoreTab() {
         onSubmit={async (e) => {
           e.preventDefault();
           const { error } = await supabase.rpc("admin_broadcast", { _title: title, _body: body });
-          if (error) return toast.error(error.message);
+          if (error) { toast.error(error.message); return; }
           toast.success("Announcement sent to all customers");
           setTitle("");
           setBody("");
@@ -315,7 +315,7 @@ function StaffTab() {
   });
   const setR = async (em: string, r: "rider" | "admin", grant: boolean) => {
     const { error } = await supabase.rpc("admin_set_role", { _email: em, _role: r, _grant: grant });
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Updated");
     qc.invalidateQueries({ queryKey: ["staff"] });
   };

@@ -30,7 +30,7 @@ function AuthPage() {
     if (mode === "in") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       setBusy(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       toast.success("Welcome back!");
       nav({ to: "/menu" });
     } else {
@@ -40,7 +40,7 @@ function AuthPage() {
         options: { data: { full_name: name, phone }, emailRedirectTo: window.location.origin },
       });
       setBusy(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       toast.success("Account created! Check your email to confirm, then sign in.");
       setMode("in");
     }

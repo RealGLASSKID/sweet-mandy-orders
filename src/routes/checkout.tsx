@@ -79,7 +79,7 @@ function Checkout() {
     });
     if (error || !orderId) {
       setBusy(false);
-      return toast.error(error?.message ?? "Could not place order");
+      { toast.error(error?.message ?? "Could not place order"); return; }
     }
     if (type === "delivery" && save) {
       await supabase.from("addresses").insert({ user_id: user.id, address, area_id: areaId, phone, label: area?.name ?? "Home" });
